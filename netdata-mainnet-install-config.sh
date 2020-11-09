@@ -94,14 +94,14 @@ sudo cp ~/custom_netdata/dd-netdata-monitoring-mainnet-erdapi/nginx.conf /etc/ng
 
 
 # Query if node network type is Mainnet or Testnet and copy the correct file
-# Declare variable nodetype and assign value 3
+# Declare variable networktype and assign value 3
 printf "\nEstablishing network type (Mainnet / Testnet) \n"
 networktype=3
 # Print to stdout
 printf "\n1. Mainnet"
 printf "\n2. Testnet"
 printf "\nPlease choose network type [1 or 2]? "
-# Loop while the variable nodetype is equal 3
+# Loop while the variable networktype is equal 3
 # bash while loop
 while [ $networktype -eq 3 ]; do
 
@@ -111,6 +111,7 @@ read networktype
 if [ $networktype -eq 1 ] ; then
 
         printf "\nNetwork type: Mainnet"
+		
 else
 
         if [ $networktype -eq 2 ] ; then
@@ -120,8 +121,8 @@ else
 				
         else
                         printf "\nPlease make a choice between 1-2 !"
-                        printf "\n1. Observer"
-                        printf "\n2. Validator"
+                        printf "\n1. Mainnet"
+                        printf "\n2. Testnet"
                         printf "\nPlease choose node type [1 or 2] ?"
                         networktype=3
         fi
