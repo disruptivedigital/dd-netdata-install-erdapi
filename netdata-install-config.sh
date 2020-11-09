@@ -1,5 +1,5 @@
 #!/bin/bash
-# Netdata install & config script - Elrond Nodes - ddigital nodes
+# Netdata install & config script - Mainnet & Testnet Elrond Nodes
 # powered by Disruptive Digital (c) 2020
 # v.2.1
 
