@@ -110,12 +110,12 @@ read networktype
 # bash nested if/else
 if [ $networktype -eq 1 ] ; then
 
-        printf "\nNetwork type: Mainnet"
+        printf "\nNetwork type: Mainnet\n"
 		
 else
 
         if [ $networktype -eq 2 ] ; then
-                 printf "\nNetwork type: Testnet"
+                 printf "\nNetwork type: Testnet\n"
 				 cd /usr/libexec/netdata/charts.d/
 				 sudo sed -i "s/api/api-testnet/" elrond.chart.sh
 				
@@ -147,13 +147,13 @@ read nodetype
 # bash nested if/else
 if [ $nodetype -eq 1 ] ; then
 
-        printf "\nNode type: Observer"
+        printf "\nNode type: Observer\n"
 		sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/elrond-obs.conf /etc/netdata/health.d/elrond.conf
 
 else
 
         if [ $nodetype -eq 2 ] ; then
-                 printf "\nNode type: Validator"
+                 printf "\nNode type: Validator\n"
 				 sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/elrond.conf /etc/netdata/health.d/
         else
                         printf "\nPlease make a choice between 1-2 !"
