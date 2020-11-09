@@ -93,7 +93,7 @@ sudo cp ~/custom_netdata/dd-netdata-monitoring-mainnet-erdapi/health_alarm_notif
 sudo cp ~/custom_netdata/dd-netdata-monitoring-mainnet-erdapi/nginx.conf /etc/nginx/
 
 
-# Query if node network type is mainnet or testnet and copy the correct file
+# Query if node network type is Mainnet or Testnet and copy the correct file
 # Declare variable nodetype and assign value 3
 printf "\nEstablishing network type (Mainnet / Testnet) \n"
 networktype=3
@@ -111,8 +111,6 @@ read networktype
 if [ $networktype -eq 1 ] ; then
 
         printf "\nNetwork type: Mainnet"
-		done
-
 else
 
         if [ $networktype -eq 2 ] ; then
@@ -129,7 +127,6 @@ else
         fi
 fi
 done
-
 
 
 # Query if node type is Observer or Validator and cp the correct file
