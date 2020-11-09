@@ -1,7 +1,7 @@
 #!/bin/bash
 # Netdata install & config script - Elrond Nodes - ddigital nodes
 # powered by Disruptive Digital (c) 2020
-# v.1.10
+# v.2.1
 
 # Starting...
 printf "Updating Linux..."
@@ -91,6 +91,46 @@ sudo cp ~/custom_netdata/dd-netdata-install-mainnet-erdapi/netdata.conf /etc/net
 sudo cp ~/custom_netdata/dd-netdata-install-mainnet-erdapi/health_alarm_notify.conf /etc/netdata/
 
 sudo cp ~/custom_netdata/dd-netdata-install-mainnet-erdapi/nginx.conf /etc/nginx/
+
+
+# Query if node network type is mainnet or testnet and copy the correct file
+# Declare variable nodetype and assign value 3
+printf "\nEstablishing network type (Mainnet / Testnet) \n"
+networktype=3
+# Print to stdout
+printf "\n1. Mainnet"
+printf "\n2. Testnet"
+printf "\nPlease choose network type [1 or 2]? "
+# Loop while the variable nodetype is equal 3
+# bash while loop
+while [ $networktype -eq 3 ]; do
+
+# read user input
+read networktype
+# bash nested if/else
+if [ $networktype -eq 1 ] ; then
+
+        printf "\nNetwork type: Mainnet"
+		done
+
+else
+
+        if [ $networktype -eq 2 ] ; then
+                 printf "\nNetwork type: Testnet"
+				 cd /usr/libexec/netdata/charts.d/
+				 sudo sed -i "s/api/api-testnet/" elrond.chart.sh
+				
+        else
+                        printf "\nPlease make a choice between 1-2 !"
+                        printf "\n1. Observer"
+                        printf "\n2. Validator"
+                        printf "\nPlease choose node type [1 or 2] ?"
+                        networktype=3
+        fi
+fi
+done
+
+
 
 # Query if node type is Observer or Validator and cp the correct file
 # Declare variable nodetype and assign value 3
