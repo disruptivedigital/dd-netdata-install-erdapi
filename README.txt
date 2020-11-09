@@ -67,6 +67,9 @@ sudo systemctl restart netdata
 ----------------------------------------------------------------------
 Versions:
 
+v.2.10
+- added the option to select network type: Mainnet / Testnet
+
 v.1.10
 - ufw opens port 80
 - get IPv4 using a more reliable command
