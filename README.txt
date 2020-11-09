@@ -28,7 +28,7 @@ sudo apt install git
 rm -rf dd-netdata-install-mainnet-erdapi
 
 > Then git clone:
-cd ~ && git clone https://github.com/disruptivedigital/dd-netdata-install-mainnet-erdapi.git && cd dd-netdata-install-mainnet-erdapi && bash netdata-install-config.sh
+cd ~ && git clone https://github.com/disruptivedigital/dd-netdata-install-erdapi.git && cd dd-netdata-install-erdapi && bash netdata-install-config.sh
 
 
 The alarms are configured as follows:
