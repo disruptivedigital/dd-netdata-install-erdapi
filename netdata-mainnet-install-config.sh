@@ -53,7 +53,7 @@ else
 	mkdir -p ~/custom_netdata
 fi
 
-cd ~/custom_netdata && rm -rf dd-netdata-install-mainnet-erdapi
+cd ~/custom_netdata && rm -rf dd-netdata-monitoring-mainnet-erdapi
 
 
 # Cloning github files
@@ -63,34 +63,34 @@ git clone https://github.com/disruptivedigital/dd-netdata-monitoring-mainnet-erd
 ip4=$(ip route get 1 | awk '{print $(NF-2);exit}')
 # ip4=${ip4:0:-1}
 printf "\nServer IP address is <$ip4>."
-cd ~/custom_netdata/dd-netdata-install-mainnet-erdapi
+cd ~/custom_netdata/dd-netdata-monitoring-mainnet-erdapi
 sed -i "s/my-ip-address/$ip4/" nginx.conf
 
 # Setting telegram bot token & recipient
 printf "\nPlease input TELEGRAM BOT TOKEN (example: 1234567890:Aa1BbCc2DdEe3FfGg4HhIiJjKkLlMmNnOoP): "
 read  tbt
-cd ~/custom_netdata/dd-netdata-install-mainnet-erdapi
+cd ~/custom_netdata/dd-netdata-monitoring-mainnet-erdapi
 sed -i "s/telegram-token-placeholder/$tbt/" health_alarm_notify.conf
 
 printf "\nPlease input TELEGRAM DEFAULT RECIPIENT (example: 123456789): "
 read  tdr
-cd ~/custom_netdata/dd-netdata-install-mainnet-erdapi
+cd ~/custom_netdata/dd-netdata-monitoring-mainnet-erdapi
 sed -i "s/telegram-recipient-placeholder/$tdr/" health_alarm_notify.conf
 
 
 # Copy the chart & config files
-sudo cp ~/custom_netdata/dd-netdata-install-mainnet-erdapi/elrond.chart.sh /usr/libexec/netdata/charts.d/
-sudo cp ~/custom_netdata/dd-netdata-install-mainnet-erdapi/charts.d.conf /usr/libexec/netdata/charts.d/
+sudo cp ~/custom_netdata/dd-netdata-monitoring-mainnet-erdapi/elrond.chart.sh /usr/libexec/netdata/charts.d/
+sudo cp ~/custom_netdata/dd-netdata-monitoring-mainnet-erdapi/charts.d.conf /usr/libexec/netdata/charts.d/
 
-sudo cp ~/custom_netdata/dd-netdata-install-mainnet-erdapi/cpu.conf /etc/netdata/health.d/
-sudo cp ~/custom_netdata/dd-netdata-install-mainnet-erdapi/disks.conf /etc/netdata/health.d/
-sudo cp ~/custom_netdata/dd-netdata-install-mainnet-erdapi/ram.conf /etc/netdata/health.d/
-sudo cp ~/custom_netdata/dd-netdata-install-mainnet-erdapi/tcp_resets.conf /etc/netdata/health.d/
+sudo cp ~/custom_netdata/dd-netdata-monitoring-mainnet-erdapi/cpu.conf /etc/netdata/health.d/
+sudo cp ~/custom_netdata/dd-netdata-monitoring-mainnet-erdapi/disks.conf /etc/netdata/health.d/
+sudo cp ~/custom_netdata/dd-netdata-monitoring-mainnet-erdapi/ram.conf /etc/netdata/health.d/
+sudo cp ~/custom_netdata/dd-netdata-monitoring-mainnet-erdapi/tcp_resets.conf /etc/netdata/health.d/
 
-sudo cp ~/custom_netdata/dd-netdata-install-mainnet-erdapi/netdata.conf /etc/netdata/
-sudo cp ~/custom_netdata/dd-netdata-install-mainnet-erdapi/health_alarm_notify.conf /etc/netdata/
+sudo cp ~/custom_netdata/dd-netdata-monitoring-mainnet-erdapi/netdata.conf /etc/netdata/
+sudo cp ~/custom_netdata/dd-netdata-monitoring-mainnet-erdapi/health_alarm_notify.conf /etc/netdata/
 
-sudo cp ~/custom_netdata/dd-netdata-install-mainnet-erdapi/nginx.conf /etc/nginx/
+sudo cp ~/custom_netdata/dd-netdata-monitoring-mainnet-erdapi/nginx.conf /etc/nginx/
 
 
 # Query if node network type is mainnet or testnet and copy the correct file
@@ -150,13 +150,13 @@ read nodetype
 if [ $nodetype -eq 1 ] ; then
 
         printf "\nNode type: Observer"
-		sudo cp ~/custom_netdata/dd-netdata-install-mainnet-erdapi/elrond-obs.conf /etc/netdata/health.d/elrond.conf
+		sudo cp ~/custom_netdata/dd-netdata-monitoring-mainnet-erdapi/elrond-obs.conf /etc/netdata/health.d/elrond.conf
 
 else
 
         if [ $nodetype -eq 2 ] ; then
                  printf "\nNode type: Validator"
-				 sudo cp ~/custom_netdata/dd-netdata-install-mainnet-erdapi/elrond.conf /etc/netdata/health.d/
+				 sudo cp ~/custom_netdata/dd-netdata-monitoring-mainnet-erdapi/elrond.conf /etc/netdata/health.d/
         else
                         printf "\nPlease make a choice between 1-2 !"
                         printf "\n1. Observer"
