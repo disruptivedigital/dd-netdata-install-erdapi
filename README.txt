@@ -67,7 +67,7 @@ sudo systemctl restart netdata
 ----------------------------------------------------------------------
 Versions:
 
-v.2.10
+v.2.1
 - added the option to select network type: Mainnet / Testnet
 
 v.1.10
