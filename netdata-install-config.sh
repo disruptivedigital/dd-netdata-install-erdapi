@@ -12,7 +12,7 @@ sudo apt -y autoremove && sudo apt-get -y autoclean
 # declare HOSTNAME variable
 printf "\nSetting up the hostname. This is the name that appears in the Netdata dashboard in the Node Name heading."
 HOSTNAME=$(hostname -s)
-printf "The current hostname for this machine is <$HOSTNAME>. Please input the new hostname or leave it blank if don't want to change it: "
+printf "\nThe current hostname for this machine is <$HOSTNAME>. Please input the new hostname or leave it blank if don't want to change it: "
 read  qhost
 
 # bash check if change hostname
