@@ -214,5 +214,5 @@ else
 fi
 cd ~
 myextip="$(dig +short myip.opendns.com @resolver1.opendns.com)"
-printf "\nNetdata monitoring access info: \nIP address: ${myextip} \nUsername: $username \nPassword: not-displayed-here"
+printf "\nNetdata monitoring access:\nhttp://${myextip} \nUsername: $username \nPassword: not-displayed-here"
 printf "\nNetdata installation complete. Configuration, script files and alerts succesfuly installed.\n"
