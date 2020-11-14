@@ -117,7 +117,7 @@ else
         if [ $networktype -eq 2 ] ; then
                  printf "\nNetwork type: Testnet\n"
 				 cd /usr/libexec/netdata/charts.d/
-				 sudo sed -i "s/api/api-testnet/" elrond.chart.sh
+				 sudo sed -i "s/api/testnet-api/" elrond.chart.sh
 				
         else
                         printf "\nPlease make a choice between 1-2 !"
@@ -169,7 +169,7 @@ sudo systemctl stop netdata && cd /var/cache/netdata && sudo rm -rf *
 cd /usr/libexec/netdata/charts.d/ && sudo chmod +x elrond.chart.sh && sudo chmod 755 elrond.chart.sh
 sudo systemctl restart netdata
 sudo systemctl reload nginx
-rm -rf ~/erd-dd-netdata-install ~/custom_netdata
+rm -rf ~/dd-netdata-install-erdapi ~/custom_netdata
 
 # Setting the firewall for Elrond nodes discovery
 printf "\nOpening port 80 for nginx access..."
