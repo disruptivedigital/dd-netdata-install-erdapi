@@ -72,7 +72,7 @@ read  tbt
 cd ~/custom_netdata/dd-netdata-monitoring-erdapi
 sed -i "s/telegram-token-placeholder/$tbt/" health_alarm_notify.conf
 
-printf "\nPlease input TELEGRAM DEFAULT RECIPIENT (example: 123456789): "
+printf "\nPlease input TELEGRAM DEFAULT RECIPIENT (example: -123456789): "
 read  tdr
 cd ~/custom_netdata/dd-netdata-monitoring-erdapi
 sed -i "s/telegram-recipient-placeholder/$tdr/" health_alarm_notify.conf
