@@ -87,7 +87,7 @@ numberofnodes=3
 # Print to stdout
 printf "\n1 node"
 printf "\n2 nodes"
-printf "\nPlease choose number of nodes running on your host [1 or 2]"
+printf "\nPlease choose number of nodes running on your host [1 or 2] "
 # Loop while the variable numberofnodes is equal 3
 # bash while loop
 while [ $numberofnodes -eq 3 ]; do
@@ -112,7 +112,7 @@ else
                         printf "\nPlease make a choice between 1-2 !"
                         printf "\n1 node"
                         printf "\n2 nodes"
-                        printf "\nPlease choose number of nodes running on your host [1 or 2]"
+                        printf "\nPlease choose number of nodes running on your host [1 or 2] "
                         numberofnodes=3
         fi
 fi
@@ -158,10 +158,10 @@ else
 				 sudo sed -i "s/api/testnet-api/" elrond.chart.sh
 				
         else
-                        printf "\nPlease make a choice between 1-2 !"
+                        printf "\nPlease make a choice between 1-2!"
                         printf "\n1. Mainnet"
                         printf "\n2. Testnet"
-                        printf "\nPlease choose node type [1 or 2] ?"
+                        printf "\nPlease choose node type [1 or 2] "
                         networktype=3
         fi
 fi
@@ -194,7 +194,7 @@ else
                  printf "\nNode type: Validator\n"
 				 sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/elrond-nodes-$erdnodes.conf /etc/netdata/health.d/elrond.conf
         else
-                        printf "\nPlease make a choice between 1-2 !"
+                        printf "\nPlease make a choice between 1-2!"
                         printf "\n1. Observer"
                         printf "\n2. Validator"
                         printf "\nPlease choose node type [1 or 2] ?"
@@ -251,6 +251,6 @@ else
 	printf "\nNo telegram alert was sent."
 fi
 cd ~
-myextip="$(dig +short myip.opendns.com @resolver1.opendns.com)"
+myextip="$(curl ifconfig.me)"
 printf "\nNetdata monitoring access:\nhttp://${myextip} \nUsername: $username \nPassword: not-displayed-here"
 printf "\nNetdata installation complete. Configuration, script files and alerts succesfuly installed.\n"
