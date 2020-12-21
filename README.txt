@@ -66,6 +66,8 @@ sudo systemctl restart netdata
 
 ----------------------------------------------------------------------
 Versions:
+v.3.0
+- updated to 2 nodes per host monitoring configuration
 
 v.2.2
 - updated official testnet API
