@@ -1,7 +1,7 @@
 #!/bin/bash
 # Netdata install & config script - Mainnet & Testnet Elrond Nodes
 # powered by Disruptive Digital (c) 2020
-# v.2.1
+# v.3.0
 
 # Starting...
 printf "Updating Linux..."
@@ -72,28 +72,66 @@ read  tbt
 cd ~/custom_netdata/dd-netdata-monitoring-erdapi
 sed -i "s/telegram-token-placeholder/$tbt/" health_alarm_notify.conf
 
-printf "\nPlease input TELEGRAM DEFAULT RECIPIENT (example: -123456789): "
+printf "\nPlease input TELEGRAM DEFAULT RECIPIENT (example: 123456789): "
 read  tdr
 cd ~/custom_netdata/dd-netdata-monitoring-erdapi
 sed -i "s/telegram-recipient-placeholder/$tdr/" health_alarm_notify.conf
 
 
 # Copy the chart & config files
-sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/elrond.chart.sh /usr/libexec/netdata/charts.d/
-sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/charts.d.conf /usr/libexec/netdata/charts.d/
 
+# Query how many nodes per host and copy the correct files
+# Declare variable numberofnodes and assign value 3
+printf "\nHow many nodes are you running on the host? \n"
+numberofnodes=3
+# Print to stdout
+printf "\n1 node"
+printf "\n2 nodes"
+printf "\nPlease choose number of nodes running on your host [1 or 2]"
+# Loop while the variable numberofnodes is equal 3
+# bash while loop
+while [ $numberofnodes -eq 3 ]; do
+
+# read user input
+read numberofnodes
+# bash nested if/else
+if [ $numberofnodes -eq 1 ] ; then
+
+        printf "\nYou selected 1 node.\n"
+		sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/elrond.chart.nodes-1.sh /usr/libexec/netdata/charts.d/elrond.chart.sh
+		# declare variable for elrond.conf file identification
+		erdnodes=1
+else
+
+        if [ $numberofnodes -eq 2 ] ; then
+                printf "\nYou selected 2 nodes.\n"
+				sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/elrond.chart.nodes-2.sh /usr/libexec/netdata/charts.d/elrond.chart.sh
+				# declare variable for elrond.conf file identification
+				erdnodes=2
+        else
+                        printf "\nPlease make a choice between 1-2 !"
+                        printf "\n1 node"
+                        printf "\n2 nodes"
+                        printf "\nPlease choose number of nodes running on your host [1 or 2]"
+                        numberofnodes=3
+        fi
+fi
+done
+
+
+
+# Copy the rest of the files
+sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/charts.d.conf /usr/libexec/netdata/charts.d/
 sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/cpu.conf /etc/netdata/health.d/
 sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/disks.conf /etc/netdata/health.d/
 sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/ram.conf /etc/netdata/health.d/
 sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/tcp_resets.conf /etc/netdata/health.d/
-
 sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/netdata.conf /etc/netdata/
 sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/health_alarm_notify.conf /etc/netdata/
-
 sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/nginx.conf /etc/nginx/
 
 
-# Query if node network type is Mainnet or Testnet and copy the correct file
+# Query if node network type is Mainnet or Testnet and make the adjustments
 # Declare variable networktype and assign value 3
 printf "\nEstablishing network type (Mainnet / Testnet) \n"
 networktype=3
@@ -111,7 +149,7 @@ read networktype
 if [ $networktype -eq 1 ] ; then
 
         printf "\nNetwork type: Mainnet\n"
-		
+		# no modification to be done
 else
 
         if [ $networktype -eq 2 ] ; then
@@ -130,13 +168,13 @@ fi
 done
 
 
-# Query if node type is Observer or Validator and cp the correct file
+# Query if node type is Observer or Validator and copy the correct files
 # Declare variable nodetype and assign value 3
 printf "\nEstablishing node type (Observer / Validator) \n"
 nodetype=3
 # Print to stdout
-printf "\n1. Observer"
-printf "\n2. Validator"
+printf "\n1. Observer node(s)"
+printf "\n2. Validator node(s)"
 printf "\nPlease choose node type [1 or 2]? "
 # Loop while the variable nodetype is equal 3
 # bash while loop
@@ -148,13 +186,13 @@ read nodetype
 if [ $nodetype -eq 1 ] ; then
 
         printf "\nNode type: Observer\n"
-		sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/elrond-obs.conf /etc/netdata/health.d/elrond.conf
+		sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/elrond-obs-nodes-$erdnodes.conf /etc/netdata/health.d/elrond.conf
 
 else
 
         if [ $nodetype -eq 2 ] ; then
                  printf "\nNode type: Validator\n"
-				 sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/elrond.conf /etc/netdata/health.d/
+				 sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/elrond-nodes-$erdnodes.conf /etc/netdata/health.d/elrond.conf
         else
                         printf "\nPlease make a choice between 1-2 !"
                         printf "\n1. Observer"
@@ -182,9 +220,9 @@ if [[ $qufw == "y" ]]; then
 	sudo apt install -y ufw
 	sudo ufw allow 37373:38383/tcp
 	
-	# Open secret SSH port or standard (22) port
+	# Open custom SSH port or standard (22) port
 	printf "\nSetting up the SSH port / other ports..."
-	printf "\nPlease input your SSH port (range ports example 37:38) or leave it blank if don't want to change it: "
+	printf "\nPlease input your SSH port or leave it blank if don't want to change it: "
 	read  sshport
 
 		# bash check if change hostname
