@@ -1,7 +1,7 @@
 #!/bin/bash
 # Netdata install & config script - Mainnet & Testnet Elrond Nodes
-# powered by Disruptive Digital (c) 2020
-# v.3.0
+# powered by Disruptive Digital (c) 2020-2021
+# v.4.0
 
 # Starting...
 printf "Updating Linux..."
@@ -13,7 +13,7 @@ sudo apt -y autoremove && sudo apt-get -y autoclean
 printf "\nSetting up the hostname. This is the name that appears in the Netdata dashboard in the Node Name heading."
 HOSTNAME=$(hostname -s)
 printf "\nThe current hostname for this machine is <$HOSTNAME>. Please input the new hostname or leave it blank if don't want to change it: "
-read  qhost
+read qhost
 
 # bash check if change hostname
 if [ -n "$qhost" ]; then
@@ -68,12 +68,12 @@ sed -i "s/my-ip-address/$ip4/" nginx.conf
 
 # Setting telegram bot token & recipient
 printf "\nPlease input TELEGRAM BOT TOKEN (example: 1234567890:Aa1BbCc2DdEe3FfGg4HhIiJjKkLlMmNnOoP): "
-read  tbt
+read tbt
 cd ~/custom_netdata/dd-netdata-monitoring-erdapi
 sed -i "s/telegram-token-placeholder/$tbt/" health_alarm_notify.conf
 
-printf "\nPlease input TELEGRAM DEFAULT RECIPIENT (example: 123456789): "
-read  tdr
+printf "\nPlease input TELEGRAM DEFAULT RECIPIENT - Group ID (example: -123456789) or User ID (example: 123456789): "
+read tdr
 cd ~/custom_netdata/dd-netdata-monitoring-erdapi
 sed -i "s/telegram-recipient-placeholder/$tdr/" health_alarm_notify.conf
 
@@ -81,43 +81,63 @@ sed -i "s/telegram-recipient-placeholder/$tdr/" health_alarm_notify.conf
 # Copy the chart & config files
 
 # Query how many nodes per host and copy the correct files
-# Declare variable numberofnodes and assign value 3
+# Declare variable numberofnodes and assign value 0
 printf "\nHow many nodes are you running on the host? \n"
-numberofnodes=3
+numberofnodes=0
 # Print to stdout
 printf "\n1 node"
 printf "\n2 nodes"
-printf "\nPlease choose number of nodes running on your host [1 or 2] "
-# Loop while the variable numberofnodes is equal 3
+printf "\n3 nodes"
+printf "\n4 nodes"
+printf "\nPlease choose number of nodes running on your host [1 to 4] "
+# Loop while the variable numberofnodes is equal 0
 # bash while loop
-while [ $numberofnodes -eq 3 ]; do
+while [ $numberofnodes -eq 0 ]; do
 
 # read user input
 read numberofnodes
 # bash nested if/else
 if [ $numberofnodes -eq 1 ] ; then
 
-        printf "\nYou selected 1 node.\n"
-		sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/elrond.chart.nodes-1.sh /usr/libexec/netdata/charts.d/elrond.chart.sh
-		# declare variable for elrond.conf file identification
-		erdnodes=1
+    printf "\nYou selected 1 node.\n"
+	sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/elrond.chart.nodes-1.sh /usr/libexec/netdata/charts.d/elrond.chart.sh
+	# declare variable for elrond.conf file identification
+	erdnodes=1
 else
 
         if [ $numberofnodes -eq 2 ] ; then
-                printf "\nYou selected 2 nodes.\n"
-				sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/elrond.chart.nodes-2.sh /usr/libexec/netdata/charts.d/elrond.chart.sh
-				# declare variable for elrond.conf file identification
-				erdnodes=2
+            printf "\nYou selected 2 nodes.\n"
+			sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/elrond.chart.nodes-2.sh /usr/libexec/netdata/charts.d/elrond.chart.sh
+			# declare variable for elrond.conf file identification
+			erdnodes=2
         else
-                        printf "\nPlease make a choice between 1-2 !"
-                        printf "\n1 node"
-                        printf "\n2 nodes"
-                        printf "\nPlease choose number of nodes running on your host [1 or 2] "
-                        numberofnodes=3
-        fi
+
+		        if [ $numberofnodes -eq 3 ] ; then
+					printf "\nYou selected 3 nodes.\n"
+					sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/elrond.chart.nodes-3.sh /usr/libexec/netdata/charts.d/elrond.chart.sh
+					# declare variable for elrond.conf file identification
+					erdnodes=3
+				else
+
+					if [ $numberofnodes -eq 4 ] ; then
+						printf "\nYou selected 4 nodes.\n"
+						sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/elrond.chart.nodes-4.sh /usr/libexec/netdata/charts.d/elrond.chart.sh
+						# declare variable for elrond.conf file identification
+						erdnodes=4
+					else
+
+							printf "\nPlease make a choice between 1-4 !"
+							printf "\n1 node"
+							printf "\n2 nodes"
+							printf "\n3 nodes"
+							printf "\n4 nodes"
+							printf "\nPlease choose number of nodes running on your host [1 to 4] "
+							numberofnodes=0
+					fi
+				fi
+		fi
 fi
 done
-
 
 
 # Copy the rest of the files
@@ -132,16 +152,16 @@ sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/nginx.conf /etc/nginx/
 
 
 # Query if node network type is Mainnet or Testnet and make the adjustments
-# Declare variable networktype and assign value 3
+# Declare variable networktype and assign value 0
 printf "\nEstablishing network type (Mainnet / Testnet) \n"
-networktype=3
+networktype=0
 # Print to stdout
 printf "\n1. Mainnet"
 printf "\n2. Testnet"
 printf "\nPlease choose network type [1 or 2]? "
-# Loop while the variable networktype is equal 3
+# Loop while the variable networktype is equal 0
 # bash while loop
-while [ $networktype -eq 3 ]; do
+while [ $networktype -eq 0 ]; do
 
 # read user input
 read networktype
@@ -162,23 +182,23 @@ else
                         printf "\n1. Mainnet"
                         printf "\n2. Testnet"
                         printf "\nPlease choose node type [1 or 2] "
-                        networktype=3
+                        networktype=0
         fi
 fi
 done
 
 
 # Query if node type is Observer or Validator and copy the correct files
-# Declare variable nodetype and assign value 3
+# Declare variable nodetype and assign value 0
 printf "\nEstablishing node type (Observer / Validator) \n"
-nodetype=3
+nodetype=0
 # Print to stdout
 printf "\n1. Observer node(s)"
 printf "\n2. Validator node(s)"
 printf "\nPlease choose node type [1 or 2]? "
-# Loop while the variable nodetype is equal 3
+# Loop while the variable nodetype is equal 0
 # bash while loop
-while [ $nodetype -eq 3 ]; do
+while [ $nodetype -eq 0 ]; do
 
 # read user input
 read nodetype
@@ -198,7 +218,7 @@ else
                         printf "\n1. Observer"
                         printf "\n2. Validator"
                         printf "\nPlease choose node type [1 or 2] ?"
-                        nodetype=3
+                        nodetype=0
         fi
 fi
 done
@@ -214,7 +234,7 @@ printf "\nOpening port 80 for nginx access..."
 sudo ufw allow 80/tcp
 shopt -s nocasematch
 printf "\nDo you want to configure firewall for nodes discovery now? (y|n) "
-read  qufw
+read qufw
 if [[ $qufw == "y" ]]; then
 	printf "\nOpening ports range 37373:38383/tcp and activating ufw..."
 	sudo apt install -y ufw
@@ -223,7 +243,7 @@ if [[ $qufw == "y" ]]; then
 	# Open custom SSH port or standard (22) port
 	printf "\nSetting up the SSH port / other ports..."
 	printf "\nPlease input your SSH port or leave it blank if don't want to change it: "
-	read  sshport
+	read sshport
 
 		# bash check if change hostname
 		if [ -n "$sshport" ]; then
@@ -243,7 +263,7 @@ fi
 # Testing telegram notifications
 shopt -s nocasematch
 printf "\nDo you want to test telegram notifications now? (y|n) "
-read  tnotif
+read tnotif
 if [[ $tnotif == "y" ]]; then
 	printf "\nYou should receive some telegram alerts..."
 	/usr/libexec/netdata/plugins.d/alarm-notify.sh test

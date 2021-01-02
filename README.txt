@@ -1,5 +1,5 @@
 Elrond real-time node performance and health monitoring
-powered by DisruptiveDigital 2020
+powered by DisruptiveDigital 2020-2021
 
 This script installs Netdata real-time, performance and health monitoring solution and automates all the necessary configurations to properly monitor your Elrond nodes.
 
@@ -55,7 +55,7 @@ The alarms are configured as follows:
 
 
 Alarms can be configured with the following command:
-cd /etc/netdata/health.d/ && sudo nano elrond.conf
+sudo nano /etc/netdata/health.d/elrond.conf
 
 Then,
 To reload only the health monitoring component execute:
@@ -66,9 +66,12 @@ sudo systemctl restart netdata
 
 ----------------------------------------------------------------------
 Versions:
+v.4.0
+- up to 4 nodes per host monitoring configuration
+- code improvements
+
 v.3.0
-- updated to 2 nodes per host monitoring configuration
-- updated external IP interrogation method
+- up to 2 nodes per host monitoring configuration
 
 v.2.2
 - updated official testnet API
