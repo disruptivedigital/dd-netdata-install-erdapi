@@ -39,9 +39,9 @@ The alarms are configured as follows:
 - WARNING if out of sync more than 02:20 (hysteresis) consensus rounds
 - CRITICAL if out of sync more than 20:200 (hysteresis) consensus rounds 
 
-> Elrond node rate dropping
-- WARNING if node rate is dropping under 99:98 (hysteresis)
-- CRITICAL if node rate is dropping under 98:85 (hysteresis)
+> Elrond node rating dropping
+- WARNING if node rating is dropping under 99:98 (hysteresis)
+- CRITICAL if node rating is dropping under 98:85 (hysteresis)
 
 > Elrond node Leader blocks proposed versus blocks accepted dropping
 - WARNING if leader blocks proposed versus blocks accepted are greater than 01:02 (hysteresis)
