@@ -1,7 +1,7 @@
 #!/bin/bash
 # Netdata install & config script - Mainnet & Testnet Elrond Nodes
-# powered by Disruptive Digital (c) 2020-2021
-# v.4.0
+# powered by Disruptive Digital (c) 2020-2021 | join our telegram group here https://t.me/disruptivedigital_vtc
+# v.4.1
 
 # Starting...
 printf "Updating Linux..."
@@ -24,7 +24,7 @@ else
 fi
 
 printf "Installing/updating Netdata (stable channel, disabled telemetry)..."
-bash <(curl -Ss https://my-netdata.io/kickstart.sh) --stable-channel --disable-telemetry
+bash <(curl -Ss https://my-netdata.io/kickstart.sh) --stable-channel --disable-telemetry --allow-duplicate-install
 
 # Apache nginx install
 printf "Installing/updating nginx apache"

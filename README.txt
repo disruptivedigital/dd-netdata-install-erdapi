@@ -68,6 +68,9 @@ sudo systemctl restart netdata
 
 ----------------------------------------------------------------------
 Versions:
+v.4.1
+- netdata install script improvement to prevent an unistall/reinstall bug
+
 v.4.0
 - up to 4 nodes per host monitoring configuration
 - code improvements
