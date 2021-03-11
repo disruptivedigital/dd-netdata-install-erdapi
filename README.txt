@@ -27,7 +27,7 @@ sudo apt update
 sudo apt install git
 
 > If the script already exists please delete the folder first:
-rm -rf dd-netdata-install-mainnet-erdapi
+rm -rf dd-netdata-install-erdapi
 
 > Then git clone:
 cd ~ && git clone https://github.com/disruptivedigital/dd-netdata-install-erdapi.git && cd dd-netdata-install-erdapi && bash netdata-install-config.sh
