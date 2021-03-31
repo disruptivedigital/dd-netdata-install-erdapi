@@ -68,6 +68,9 @@ sudo systemctl restart netdata
 
 ----------------------------------------------------------------------
 Versions:
+v.4.2
+- script update: sudo chown -R $USER $HOME
+
 v.4.1
 - netdata install script improvement to prevent an unistall/reinstall bug
 
