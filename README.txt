@@ -35,7 +35,7 @@ cd ~ && git clone https://github.com/disruptivedigital/dd-netdata-install-erdapi
 
 The alarms are configured as follows:
 
-> Elrond node is not maintaining syncronization
+> Elrond node is not maintaining synchronization
 - WARNING if out of sync more than 02:20 (hysteresis) consensus rounds
 - CRITICAL if out of sync more than 20:200 (hysteresis) consensus rounds 
 
