@@ -1,7 +1,17 @@
 #!/bin/bash
 # Netdata install & config script - Mainnet & Testnet Elrond Nodes
-# powered by Disruptive Digital (c) 2020-2021 | join our telegram group here https://t.me/disruptivedigital_vtc
-# v.4.1
+# powered by Disruptive Digital (c) 2020-2021 | join our tech telegram group here https://t.me/disruptivedigital_vtc
+# v.5.0
+
+# Checking if Elrond Script is present
+if [ ! -f "/$HOME/elrond-nodes/node-0/config/prefs.toml" ]
+then
+	echo "Elrond nodes script is not correctly installed or configured. Please follow the installation details here: https://docs.elrond.com/validators/overview/ 
+The installer will exit..."
+	exit
+else
+	echo "Elrond nodes script detected. Netdata monitoring installation for Elrond nodes is starting... "
+fi
 
 # Starting...
 printf "Updating Linux..."
@@ -41,40 +51,22 @@ cat /etc/nginx/.htpasswd
 printf "Verifying the nginx configuration to check if everything is ok..."
 sudo nginx -t
 
-# bash check if directory exists
-printf "\nDownloading Disruptive Digital script & configuration files..."
-
-directory="/home/ubuntu/custom_netdata/"
-
-if [ -d $directory ]; then
-        printf "\ncustom_netdata directory exists..."
-else
-        printf "\ncustom_netdata directory does not exists. Creating now..."
-	mkdir -p ~/custom_netdata
-fi
-
-cd ~/custom_netdata && rm -rf dd-netdata-monitoring-erdapi
-
-
-# Cloning github files
-git clone https://github.com/disruptivedigital/dd-netdata-monitoring-erdapi.git
-
 # Assign the IP address to nginx.conf
 ip4=$(ip route get 1 | awk '{print $(NF-2);exit}')
 # ip4=${ip4:0:-1}
 printf "\nServer IP address is <$ip4>."
-cd ~/custom_netdata/dd-netdata-monitoring-erdapi
+cd ~/dd-netdata-install-erdapi
 sed -i "s/my-ip-address/$ip4/" nginx.conf
 
 # Setting telegram bot token & recipient
 printf "\nPlease input TELEGRAM BOT TOKEN (example: 1234567890:Aa1BbCc2DdEe3FfGg4HhIiJjKkLlMmNnOoP): "
 read tbt
-cd ~/custom_netdata/dd-netdata-monitoring-erdapi
+cd ~/dd-netdata-install-erdapi
 sed -i "s/telegram-token-placeholder/$tbt/" health_alarm_notify.conf
 
 printf "\nPlease input TELEGRAM DEFAULT RECIPIENT - Group ID (example: -123456789) or User ID (example: 123456789): "
 read tdr
-cd ~/custom_netdata/dd-netdata-monitoring-erdapi
+cd ~/dd-netdata-install-erdapi
 sed -i "s/telegram-recipient-placeholder/$tdr/" health_alarm_notify.conf
 
 
@@ -84,12 +76,6 @@ sed -i "s/telegram-recipient-placeholder/$tdr/" health_alarm_notify.conf
 # Declare variable numberofnodes and assign value 0
 printf "\nHow many nodes are you running on the host? \n"
 numberofnodes=0
-# Print to stdout
-printf "\n1 node"
-printf "\n2 nodes"
-printf "\n3 nodes"
-printf "\n4 nodes"
-printf "\nPlease choose number of nodes running on your host [1 to 4] "
 # Loop while the variable numberofnodes is equal 0
 # bash while loop
 while [ $numberofnodes -eq 0 ]; do
@@ -97,59 +83,29 @@ while [ $numberofnodes -eq 0 ]; do
 # read user input
 read numberofnodes
 # bash nested if/else
-if [ $numberofnodes -eq 1 ] ; then
-
-    printf "\nYou selected 1 node.\n"
-	sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/elrond.chart.nodes-1.sh /usr/libexec/netdata/charts.d/elrond.chart.sh
+if [ "$numberofnodes"  -ge 1 ] 2>/dev/null; 
+then
+    printf "\nCreating the Elrond chart file for $numberofnodes node(s)\n"
+	cd ~/dd-netdata-install-erdapi/
+	bash dd-gen-erdcharts-v1.sh $numberofnodes
+	sudo cp ~/dd-netdata-install-erdapi/elrond.chart.sh /usr/libexec/netdata/charts.d/
 	# declare variable for elrond.conf file identification
-	erdnodes=1
 else
-
-        if [ $numberofnodes -eq 2 ] ; then
-            printf "\nYou selected 2 nodes.\n"
-			sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/elrond.chart.nodes-2.sh /usr/libexec/netdata/charts.d/elrond.chart.sh
-			# declare variable for elrond.conf file identification
-			erdnodes=2
-        else
-
-		        if [ $numberofnodes -eq 3 ] ; then
-					printf "\nYou selected 3 nodes.\n"
-					sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/elrond.chart.nodes-3.sh /usr/libexec/netdata/charts.d/elrond.chart.sh
-					# declare variable for elrond.conf file identification
-					erdnodes=3
-				else
-
-					if [ $numberofnodes -eq 4 ] ; then
-						printf "\nYou selected 4 nodes.\n"
-						sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/elrond.chart.nodes-4.sh /usr/libexec/netdata/charts.d/elrond.chart.sh
-						# declare variable for elrond.conf file identification
-						erdnodes=4
-					else
-
-							printf "\nPlease make a choice between 1-4 !"
-							printf "\n1 node"
-							printf "\n2 nodes"
-							printf "\n3 nodes"
-							printf "\n4 nodes"
-							printf "\nPlease choose number of nodes running on your host [1 to 4] "
-							numberofnodes=0
-					fi
-				fi
-		fi
+	numberofnodes=0
+	echo "Input interger greater than 0"
 fi
 done
 
 
 # Copy the rest of the files
-sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/charts.d.conf /usr/libexec/netdata/charts.d/
-sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/cpu.conf /etc/netdata/health.d/
-sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/disks.conf /etc/netdata/health.d/
-sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/ram.conf /etc/netdata/health.d/
-sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/tcp_resets.conf /etc/netdata/health.d/
-sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/netdata.conf /etc/netdata/
-sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/health_alarm_notify.conf /etc/netdata/
-sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/nginx.conf /etc/nginx/
-
+sudo cp ~/dd-netdata-install-erdapi/charts.d.conf /usr/libexec/netdata/charts.d/
+sudo cp ~/dd-netdata-install-erdapi/cpu.conf /etc/netdata/health.d/
+sudo cp ~/dd-netdata-install-erdapi/disks.conf /etc/netdata/health.d/
+sudo cp ~/dd-netdata-install-erdapi/ram.conf /etc/netdata/health.d/
+sudo cp ~/dd-netdata-install-erdapi/tcp_resets.conf /etc/netdata/health.d/
+sudo cp ~/dd-netdata-install-erdapi/netdata.conf /etc/netdata/
+sudo cp ~/dd-netdata-install-erdapi/health_alarm_notify.conf /etc/netdata/
+sudo cp ~/dd-netdata-install-erdapi/nginx.conf /etc/nginx/
 
 # Query if node network type is Mainnet or Testnet and make the adjustments
 # Declare variable networktype and assign value 0
@@ -167,22 +123,34 @@ while [ $networktype -eq 0 ]; do
 read networktype
 # bash nested if/else
 if [ $networktype -eq 1 ] ; then
-
-        printf "\nNetwork type: Mainnet\n"
-		# no modification to be done
+		printf "\nNetwork type: Mainnet. Please input your personal API including the port (example: 192.168.1.1:8080) or leave it blank if you want to use the Elrond API: "
+		read mAPI
+		# bash check if change API
+		if [ -n "$mAPI" ]; then
+			printf "\nSetting API to $mAPI\n"
+			sudo sed -i "s/api.elrond.com/$mAPI/" /usr/libexec/netdata/charts.d/elrond.chart.sh
+		else
+			printf "\nUsing Elrond mainnet API.\n"
+		fi
 else
 
         if [ $networktype -eq 2 ] ; then
-                 printf "\nNetwork type: Testnet\n"
-				 cd /usr/libexec/netdata/charts.d/
-				 sudo sed -i "s/api/testnet-api/" elrond.chart.sh
-				
+			printf "\nNetwork type: Testnet. Please input your personal API including the port (example: 192.168.1.1:8080) or leave it blank if you want to use the Elrond API: "
+			read tAPI
+			# bash check if change API
+				if [ -n "$tAPI" ]; then
+					printf "\nSetting API to $tAPI\n"
+					sudo sed -i "s/api.elrond.com/$tAPI/" /usr/libexec/netdata/charts.d/elrond.chart.sh
+				else
+					sudo sed -i "s/api/testnet-api/" /usr/libexec/netdata/charts.d/elrond.chart.sh
+					printf "\nUsing Elrond testnet API.\n"
+				fi
         else
-                        printf "\nPlease make a choice between 1-2!"
-                        printf "\n1. Mainnet"
-                        printf "\n2. Testnet"
-                        printf "\nPlease choose node type [1 or 2] "
-                        networktype=0
+			printf "\nPlease make a choice between 1-2!"
+            printf "\n1. Mainnet"
+			printf "\n2. Testnet"
+			printf "\nPlease choose node type [1 or 2] "
+			networktype=0
         fi
 fi
 done
@@ -199,20 +167,20 @@ printf "\nPlease choose node type [1 or 2]? "
 # Loop while the variable nodetype is equal 0
 # bash while loop
 while [ $nodetype -eq 0 ]; do
-
 # read user input
 read nodetype
 # bash nested if/else
 if [ $nodetype -eq 1 ] ; then
-
-        printf "\nNode type: Observer\n"
-		sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/elrond-obs-nodes-$erdnodes.conf /etc/netdata/health.d/elrond.conf
-
+		printf "\nNode type: Observer\n"
+		cd ~/dd-netdata-install-erdapi/
+		bash dd-gen-erdocfg-v1.sh $numberofnodes
+		sudo cp ~/dd-netdata-install-erdapi/elrond.conf /etc/netdata/health.d/
 else
-
-        if [ $nodetype -eq 2 ] ; then
-                 printf "\nNode type: Validator\n"
-				 sudo cp ~/custom_netdata/dd-netdata-monitoring-erdapi/elrond-nodes-$erdnodes.conf /etc/netdata/health.d/elrond.conf
+		if [ $nodetype -eq 2 ] ; then
+			printf "\nNode type: Validator\n"
+			cd ~/dd-netdata-install-erdapi/
+			bash dd-gen-erdvcfg-v1.sh $numberofnodes
+			sudo cp ~/dd-netdata-install-erdapi/elrond.conf /etc/netdata/health.d/
         else
                         printf "\nPlease make a choice between 1-2!"
                         printf "\n1. Observer"
@@ -227,7 +195,7 @@ sudo systemctl stop netdata && cd /var/cache/netdata && sudo rm -rf *
 cd /usr/libexec/netdata/charts.d/ && sudo chmod +x elrond.chart.sh && sudo chmod 755 elrond.chart.sh
 sudo systemctl restart netdata
 sudo systemctl reload nginx
-rm -rf ~/dd-netdata-install-erdapi ~/custom_netdata
+sudo rm -rf ~/dd-netdata-install-erdapi
 
 # Setting the firewall for Elrond nodes discovery
 printf "\nOpening port 80 for nginx access..."
@@ -239,7 +207,7 @@ if [[ $qufw == "y" ]]; then
 	printf "\nOpening ports range 37373:38383/tcp and activating ufw..."
 	sudo apt install -y ufw
 	sudo ufw allow 37373:38383/tcp
-	
+
 	# Open custom SSH port or standard (22) port
 	printf "\nSetting up the SSH port / other ports..."
 	printf "\nPlease input your SSH port or leave it blank if don't want to change it: "
@@ -252,7 +220,7 @@ if [[ $qufw == "y" ]]; then
 		else
 			printf "\nSSH port remained unchanged."
 		fi
-	
+
 	#sudo ufw --force enable
 	sudo ufw status verbose
 else
