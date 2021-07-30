@@ -70,10 +70,10 @@ sudo systemctl restart netdata
 Versions:
 
 v.5.0
-- Script checks for Elrond go script node installation.
+- Script checks for Elrond go script node installation and starts the installation only if the Elrond script is present.
 - Elrond nodes charts are procedural generated now. Any number of nodes can be monitored now on one server.
 - Added the possibility to set your own mainnet or testnet API domain or IP.
-- Netdata cloud Elrond metrics now have elrond prefix.
+- Elrond charts metrics now have elrond prefix for easier finding in Netdata cloud.
 - Some code cleaning. 
 
 v.4.2
