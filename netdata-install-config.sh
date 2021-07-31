@@ -74,7 +74,7 @@ sed -i "s/telegram-recipient-placeholder/$tdr/" health_alarm_notify.conf
 
 # Query how many nodes per host and copy the correct files
 # Declare variable numberofnodes and assign value 0
-printf "\nHow many nodes are you running on the host? \n"
+printf "\nHow many nodes are you running on the host? "
 numberofnodes=0
 # Loop while the variable numberofnodes is equal 0
 # bash while loop
@@ -108,9 +108,10 @@ sudo cp ~/dd-netdata-install-erdapi/health_alarm_notify.conf /etc/netdata/
 sudo cp ~/dd-netdata-install-erdapi/nginx.conf /etc/nginx/
 
 # Query if node network type is Mainnet or Testnet and make the adjustments
-# Declare variable networktype and assign value 0
+# Declaring variables networktype & mainElrondAPI
 printf "\nEstablishing network type (Mainnet / Testnet) \n"
 networktype=0
+mainElrondAPI="https://api.elrond.com"
 # Print to stdout
 printf "\n1. Mainnet"
 printf "\n2. Testnet"
@@ -127,8 +128,8 @@ if [ $networktype -eq 1 ] ; then
 		read mAPI
 		# bash check if change API
 		if [ -n "$mAPI" ]; then
-			printf "\nSetting API to $mAPI\n"
-			sudo sed -i "s/https:\/\/api\.elrond\.com/$mAPI/" /usr/libexec/netdata/charts.d/elrond.chart.sh
+			printf "\nSetting mainnet API to $mAPI\n"
+			sudo sed -i 's,'"$mainElrondAPI"','"$mAPI"',' /usr/libexec/netdata/charts.d/elrond.chart.sh
 		else
 			printf "\nUsing Elrond mainnet API.\n"
 		fi
@@ -139,8 +140,8 @@ else
 			read tAPI
 			# bash check if change API
 				if [ -n "$tAPI" ]; then
-					printf "\nSetting API to $tAPI\n"
-					sudo sed -i "s/https:\/\/api\.elrond\.com/$tAPI/" /usr/libexec/netdata/charts.d/elrond.chart.sh
+					printf "\nSetting testnet API to $tAPI\n"
+					sudo sed -i 's,'"$mainElrondAPI"','"$tAPI"',' /usr/libexec/netdata/charts.d/elrond.chart.sh
 				else
 					sudo sed -i "s/api/testnet-api/" /usr/libexec/netdata/charts.d/elrond.chart.sh
 					printf "\nUsing Elrond testnet API.\n"
