@@ -123,7 +123,7 @@ while [ $networktype -eq 0 ]; do
 read networktype
 # bash nested if/else
 if [ $networktype -eq 1 ] ; then
-		printf "\nNetwork type: Mainnet. Please input your personal API including the port (example: 192.168.1.1:8080; https://myAPI.do) or leave it blank if you want to use the Elrond mainnet API: "
+		printf "\nNetwork type: Mainnet. Please input your personal API including the port (example: http://192.168.1.1:8080; https://myAPI.do) or leave it blank if you want to use the Elrond mainnet API: "
 		read mAPI
 		# bash check if change API
 		if [ -n "$mAPI" ]; then
@@ -135,7 +135,7 @@ if [ $networktype -eq 1 ] ; then
 else
 
         if [ $networktype -eq 2 ] ; then
-			printf "\nNetwork type: Testnet. Please input your personal API including the port (example: 192.168.1.1:8080; https://myAPI.do) or leave it blank if you want to use the Elrond testnet API: "
+			printf "\nNetwork type: Testnet. Please input your personal API including the port (example: http://192.168.1.1:8080; https://myAPI.do) or leave it blank if you want to use the Elrond testnet API: "
 			read tAPI
 			# bash check if change API
 				if [ -n "$tAPI" ]; then
