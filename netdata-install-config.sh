@@ -123,24 +123,24 @@ while [ $networktype -eq 0 ]; do
 read networktype
 # bash nested if/else
 if [ $networktype -eq 1 ] ; then
-		printf "\nNetwork type: Mainnet. Please input your personal API including the port (example: 192.168.1.1:8080) or leave it blank if you want to use the Elrond API: "
+		printf "\nNetwork type: Mainnet. Please input your personal API including the port (example: 192.168.1.1:8080; https://myAPI.do) or leave it blank if you want to use the Elrond mainnet API: "
 		read mAPI
 		# bash check if change API
 		if [ -n "$mAPI" ]; then
 			printf "\nSetting API to $mAPI\n"
-			sudo sed -i "s/api.elrond.com/$mAPI/" /usr/libexec/netdata/charts.d/elrond.chart.sh
+			sudo sed -i "s/https:\/\/api\.elrond\.com/$mAPI/" /usr/libexec/netdata/charts.d/elrond.chart.sh
 		else
 			printf "\nUsing Elrond mainnet API.\n"
 		fi
 else
 
         if [ $networktype -eq 2 ] ; then
-			printf "\nNetwork type: Testnet. Please input your personal API including the port (example: 192.168.1.1:8080) or leave it blank if you want to use the Elrond API: "
+			printf "\nNetwork type: Testnet. Please input your personal API including the port (example: 192.168.1.1:8080; https://myAPI.do) or leave it blank if you want to use the Elrond testnet API: "
 			read tAPI
 			# bash check if change API
 				if [ -n "$tAPI" ]; then
 					printf "\nSetting API to $tAPI\n"
-					sudo sed -i "s/api.elrond.com/$tAPI/" /usr/libexec/netdata/charts.d/elrond.chart.sh
+					sudo sed -i "s/https:\/\/api\.elrond\.com/$tAPI/" /usr/libexec/netdata/charts.d/elrond.chart.sh
 				else
 					sudo sed -i "s/api/testnet-api/" /usr/libexec/netdata/charts.d/elrond.chart.sh
 					printf "\nUsing Elrond testnet API.\n"
