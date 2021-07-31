@@ -216,7 +216,7 @@ CHART elrond.epoch-node0 '' "Current epch" "Epoch" "Current epoch" elrond.epoch 
 DIMENSION epoch 'Epoch' absolute 1 1
 EOF
 read -r -d '' blockCreate[5] << EOF
-CHART elrond.peers-node0 '' "Connected peers" "Connected peers" elrond.peers stacked \$((elrond_priority + 10)) \$elrond_update_every
+CHART elrond.peers-node0 '' "Connected peers" "Connected peers" "Peers" elrond.peers stacked \$((elrond_priority + 10)) \$elrond_update_every
 DIMENSION peers 'Peers' absolute 1 1
 EOF
 read -r -d '' blockCreate[6] << EOF
