@@ -33,6 +33,22 @@ rm -rf dd-netdata-install-erdapi
 cd ~ && git clone https://github.com/disruptivedigital/dd-netdata-install-erdapi.git && cd dd-netdata-install-erdapi && bash netdata-install-config.sh
 
 
+Node parameters in netdata.cloud:
+elrond.round = Consensus round
+elrond.vblocks = Validator blocks signed/accepted
+elrond.lblocks = Leader blocks proposed/accepted
+elrond.rating = Current node (tempRating) rating
+elrond.epoch = Current epoch
+elrond.peers = Connected peers
+elrond.vn = Connected validators / total nodes
+elrond.lsf = Leader success/failure
+elrond.vsf = Validator success/failure
+elrond.is = Validator ignored signatures
+elrond.tlsf = Total leader success/failure
+elrond.tvsf = Total validator success/failure
+elrond.tis = Total ignored signatures
+
+
 The alarms are configured as follows:
 
 > Elrond node is not maintaining synchronization
@@ -70,10 +86,11 @@ sudo systemctl restart netdata
 Versions:
 
 v.5.0
-- Script checks for Elrond go script node installation and starts the installation only if the Elrond script is present.
-- Elrond nodes charts are procedural generated now. Any number of nodes can be monitored now on one server.
-- Added the possibility to set your own mainnet or testnet API domain or IP.
-- Elrond charts metrics now have elrond prefix for easier finding in Netdata cloud.
+- Script checks for Elrond go script node installation and starts the installation only if prefs.toml config file is present.
+- Elrond node charts are procedural generated now. Any number of nodes can be monitored now on one server.
+- Added the possibility to set your own mainnet or testnet API IP/domain.
+- Elrond chart metrics now have elrond prefix for easier finding in Netdata cloud.
+- Elrond netdata config file is now procedural generated and includes the node names for an easier indentification in telegram alarms.
 - Some code cleaning. 
 
 v.4.2
