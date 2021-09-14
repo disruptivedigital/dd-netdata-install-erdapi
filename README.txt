@@ -1,4 +1,4 @@
-Elrond real-time node performance and health monitoring
+Elrond real-time node performance and health monitoring with Netdata
 powered by DisruptiveDigital 2020-2021
 special thanks to @FRANKF1957 and all the helpful friends in the Elrond - Netdata Users telegram group
 please join Elrond - Netdata Users for more info - https://t.me/Elrond_Netdata_Users
