@@ -34,7 +34,7 @@ else
 fi
 
 printf "Installing/updating Netdata (stable channel, disabled telemetry)..."
-bash <(curl -Ss https://my-netdata.io/kickstart.sh) --stable-channel --disable-telemetry --allow-duplicate-install
+bash <(curl -Ss https://my-netdata.io/kickstart.sh) --stable-channel --disable-telemetry
 
 # Apache nginx install
 printf "Installing/updating nginx apache"
